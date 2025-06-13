@@ -1,0 +1,115 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  :root {
+    --background: 180 25% 93.7%; /* Light grayish-teal #E0EEEE */
+    --foreground: 180 100% 12%; /* Darker teal for text */
+    
+    --card: 180 25% 98%;
+    --card-foreground: 180 100% 12%;
+
+    --popover: 180 25% 98%;
+    --popover-foreground: 180 100% 12%;
+
+    --primary: 180 100% 25.1%; /* Teal #008080 */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 180 40% 80%; /* Lighter, less saturated teal */
+    --secondary-foreground: 180 100% 15%;
+
+    --muted: 180 30% 88%;
+    --muted-foreground: 180 25% 45%;
+
+    --accent: 183 100% 74.3%; /* Electric blue #7DF9FF */
+    --accent-foreground: 180 100% 10%; /* Dark teal/black for text on accent */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 180 20% 85%;
+    --input: 180 20% 90%;
+    --ring: 183 100% 60%; /* Ring color based on accent */
+    
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 5%; /* Almost Black */
+    --foreground: 0 0% 95%; /* Bright Off-White */
+
+    --card: 0 0% 8%; /* Darker Grey for Cards */
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 180 100% 45%; /* Neon Teal */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 180 60% 25%; /* Darker, less saturated Teal */
+    --secondary-foreground: 0 0% 90%; /* Light Grey */
+
+    --muted: 0 0% 12%; /* Dark Grey for Muted */
+    --muted-foreground: 0 0% 60%; /* Medium Grey for Muted Text */
+
+    --accent: 195 100% 50%; /* Neon Electric Blue */
+    --accent-foreground: 0 0% 100%; /* White */
+
+    --destructive: 0 100% 50%; /* Neon Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 0 0% 20%; /* Subtle Dark Grey Border */
+    --input: 0 0% 10%; /* Dark Input Background */
+    --ring: 195 100% 55%; /* Neon Blue Ring */
+    
+    --chart-1: 300 100% 55%; /* Neon Magenta/Pink */
+    --chart-2: 130 100% 50%; /* Neon Green */
+    --chart-3: 50 100% 50%;  /* Neon Yellow-Orange */
+    --chart-4: 210 100% 55%; /* Neon Sky Blue */
+    --chart-5: 270 100% 60%; /* Neon Violet */
+
+    --sidebar-background: 0 0% 7%; /* Very Dark Grey for Sidebar */
+    --sidebar-foreground: 0 0% 85%; /* Lighter Grey Text */
+    --sidebar-primary: 180 100% 45%; /* Neon Teal */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 180 100% 35%; /* Darker Neon Teal for Hover/Active */
+    --sidebar-accent-foreground: 0 0% 100%; /* White */
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 195 100% 55%; /* Neon Blue Ring */
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
