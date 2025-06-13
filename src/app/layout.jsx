@@ -4,6 +4,7 @@ import './globals.css';
 import { Inter, Space_Grotesk, Fira_Code } from 'next/font/google';
 import { Toaster } from "../components/ui/toaster.jsx";
 import { CustomCursor } from '../components/common/custom-cursor.jsx';
+import { ThemeProvider } from '../components/theme/theme-provider.jsx';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLayoutEffect } from 'react';
@@ -41,13 +42,15 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang="en" className={`dark ${inter.variable} ${spaceGrotesk.variable} ${firaCode.variable}`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${firaCode.variable}`}>
       <body className="font-sans antialiased bg-background text-foreground">
-        <div key="content-wrapper" className="relative">
-          <CustomCursor key="cursor" />
-          <main key="main-content">{children}</main>
-          <Toaster key="toaster" />
-        </div>
+        <ThemeProvider>
+          <div key="content-wrapper" className="relative">
+            <CustomCursor key="cursor" />
+            <main key="main-content">{children}</main>
+            <Toaster key="toaster" />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

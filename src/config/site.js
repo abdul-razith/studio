@@ -1,17 +1,4 @@
-
-// export type NavItem = {
-//   title: string;
-//   href: string;
-//   external?: boolean;
-// };
-
-// export type SocialLink = {
-//   name: string;
-//   href: string;
-//   icon: React.ComponentType<{ className?: string }>;
-// };
-
-import { Github, Linkedin, Twitter } from 'lucide-react'; 
+import { Github, Linkedin } from 'lucide-react';
 
 export const navItems = [
   { title: 'About', href: '#about' },
@@ -21,13 +8,12 @@ export const navItems = [
 ];
 
 export const socialLinks = [
-  { name: 'GitHub', href: 'https://github.com/yourusername', icon: Github },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/yourusername', icon: Linkedin },
-  { name: 'Twitter', href: 'https://twitter.com/yourusername', icon: Twitter },
+  { name: 'GitHub', href: 'https://github.com/abdul-razith', icon: Github },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/abdul-razith/', icon: Linkedin },
 ];
 
 export const siteConfig = {
   name: "Abdul Razith",
   description: "A modern, artistic, and minimalist single-page portfolio for Abdul Razith, a React developer.",
-  resumeUrl: "/Abdul_Razith_CV.pdf", 
+  resumeUrl: "https://drive.google.com/file/d/1YI0TtxD-7tmqRHp_VdOcEWxTnoZUzL_H/view?usp=sharing", 
 };

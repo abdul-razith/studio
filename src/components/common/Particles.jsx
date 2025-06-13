@@ -1,11 +1,13 @@
-
 "use client";
 
 import { useEffect, useRef } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 import { cn } from "../../lib/utils.js";
+import { useTheme } from "../theme/theme-provider.jsx";
 
-const defaultColors = ["#ffffff", "#ffffff", "#ffffff"];
+// Swapped colors: light colors for dark theme, dark colors for light theme
+const darkThemeColors = ["#00E5E5", "#00AFFF", "#F0F0F0"]; // Light colors for dark theme
+const lightThemeColors = ["#006666", "#005580", "#333333"]; // Dark colors for light theme
 
 const hexToRgb = (hex) => {
   hex = hex.replace(/^#/, "");
@@ -51,7 +53,7 @@ const vertex = /* glsl */ `
     
     vec4 mvPos = viewMatrix * mPos;
     // Adjust point size based on distance and base size
-    gl_PointSize = (uBaseSize * (1.0 + uSizeRandomness * (random.x - 0.5))) / length(mvPos.xyz); // Using length(mvPos.xyz) for perspective scaling
+    gl_PointSize = (uBaseSize * (1.0 + uSizeRandomness * (random.x - 0.5))) / length(mvPos.xyz);
     gl_Position = projectionMatrix * mvPos;
   }
 `;
@@ -61,22 +63,26 @@ const fragment = /* glsl */ `
   
   uniform float uTime;
   uniform float uAlphaParticles;
+  uniform float uColorTransition; // New uniform for color transition
+  
   varying vec4 vRandom;
   varying vec3 vColor;
   
   void main() {
     vec2 uv = gl_PointCoord.xy;
-    float d = length(uv - vec2(0.5)); // Distance from center of the point
+    float d = length(uv - vec2(0.5));
     
-    if(uAlphaParticles < 0.5) { // Solid particles
-      if(d > 0.5) { // Discard pixels outside the circle
+    if(uAlphaParticles < 0.5) {
+      if(d > 0.5) {
         discard;
       }
-      // Color with slight animation
-      gl_FragColor = vec4(vColor + 0.2 * sin(uv.yxx + uTime + vRandom.y * 6.28), 1.0);
-    } else { // Alpha blended particles
-      float circle = smoothstep(0.5, 0.4, d) * 0.8; // Soft edge
-      gl_FragColor = vec4(vColor + 0.2 * sin(uv.yxx + uTime + vRandom.y * 6.28), circle);
+      // Smooth color transition with animation
+      vec3 animatedColor = vColor + 0.2 * sin(uv.yxx + uTime + vRandom.y * 6.28);
+      gl_FragColor = vec4(animatedColor, 1.0);
+    } else {
+      float circle = smoothstep(0.5, 0.4, d) * 0.8;
+      vec3 animatedColor = vColor + 0.2 * sin(uv.yxx + uTime + vRandom.y * 6.28);
+      gl_FragColor = vec4(animatedColor, circle);
     }
   }
 `;
@@ -112,6 +118,9 @@ const Particles = ({
 }) => {
   const containerRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
+  const { theme } = useTheme();
+  const currentColors = particleColors || (theme === 'dark' ? darkThemeColors : lightThemeColors);
+  const prevThemeRef = useRef(theme);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -149,7 +158,6 @@ const Particles = ({
     const positions = new Float32Array(count * 3);
     const randoms = new Float32Array(count * 4); 
     const colors = new Float32Array(count * 3); 
-    const palette = particleColors && particleColors.length > 0 ? particleColors : defaultColors;
 
     for (let i = 0; i < count; i++) {
       let x, y, z, len;
@@ -162,7 +170,7 @@ const Particles = ({
       const r = Math.cbrt(Math.random()); 
       positions.set([x * r, y * r, z * r], i * 3);
       randoms.set([Math.random(), Math.random(), Math.random(), Math.random()], i * 4);
-      const col = hexToRgb(palette[Math.floor(Math.random() * palette.length)]);
+      const col = hexToRgb(currentColors[Math.floor(Math.random() * currentColors.length)]);
       colors.set(col, i * 3);
     }
 
@@ -180,7 +188,8 @@ const Particles = ({
         uSpread: { value: particleSpread },
         uBaseSize: { value: particleBaseSize },
         uSizeRandomness: { value: sizeRandomness },
-        uAlphaParticles: { value: alphaParticles ? 1.0 : 0.0 }, 
+        uAlphaParticles: { value: alphaParticles ? 1.0 : 0.0 },
+        uColorTransition: { value: 0.0 }, // Initialize transition value
       },
       transparent: true, 
       depthTest: false, 
@@ -191,12 +200,29 @@ const Particles = ({
     let animationFrameId;
     let lastTime = performance.now();
     let elapsed = 0;
+    let transitionStartTime = 0;
+    let isTransitioning = false;
 
     const update = (t) => {
       animationFrameId = requestAnimationFrame(update);
       const delta = t - lastTime;
       lastTime = t;
       elapsed += delta * speed; 
+
+      // Handle theme transition
+      if (theme !== prevThemeRef.current) {
+        if (!isTransitioning) {
+          isTransitioning = true;
+          transitionStartTime = t;
+        }
+        const transitionProgress = Math.min((t - transitionStartTime) / 1000, 1); // 1 second transition
+        program.uniforms.uColorTransition.value = transitionProgress;
+        
+        if (transitionProgress === 1) {
+          isTransitioning = false;
+          prevThemeRef.current = theme;
+        }
+      }
 
       program.uniforms.uTime.value = elapsed * 0.001; 
 
@@ -233,7 +259,7 @@ const Particles = ({
     particleCount,
     particleSpread,
     speed,
-    JSON.stringify(particleColors), 
+    currentColors,
     moveParticlesOnHover,
     particleHoverFactor,
     alphaParticles,
@@ -241,6 +267,7 @@ const Particles = ({
     sizeRandomness,
     cameraDistance,
     disableRotation,
+    theme,
   ]); 
 
   return (

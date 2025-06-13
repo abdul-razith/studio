@@ -19,11 +19,7 @@ import {
 } from "react-icons/si";
 import { FaCode } from "react-icons/fa";
 import { VscVscode } from "react-icons/vsc";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from "motion/react"
 
 // Skill data with categories and proficiency levels
 const skillsData = {
@@ -60,59 +56,50 @@ const skillsData = {
   }
 };
 
+const containerVariants = {
+  initial: {},
+  animate: { transition: { staggerChildren: 0.15, delayChildren: 0.3 } },
+};
+const headingVariants = {
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] } },
+};
+const descriptionVariants = {
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: [0.23, 1, 0.32, 1] } },
+};
+const categoryVariants = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] } },
+};
+
 export function SkillsSection() {
-  const sectionRef = useRef(null);
-  const headingRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const frontendRef = useRef(null);
-  const backendRef = useRef(null);
-  const toolsRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse",
-        }
-      });
-
-      // Animate main heading and description
-      tl.fromTo([headingRef.current, descriptionRef.current],
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.2 }
-      );
-
-      // Animate each category
-      const categoryRefs = [frontendRef.current, backendRef.current, toolsRef.current];
-      categoryRefs.forEach((ref, index) => {
-        if (ref) {
-          tl.fromTo(ref,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.6 },
-            0.4 + (index * 0.2)
-          );
-        }
-      });
-    }, sectionRef);
-    
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <SectionWrapper ref={sectionRef} id="skills" className="bg-secondary/30">
+    <SectionWrapper id="skills" className="bg-secondary/30">
       <div className="text-center max-w-6xl mx-auto px-4">
-        <h2 ref={headingRef} className="font-headline text-4xl font-bold text-primary md:text-5xl">
+        <motion.h2
+          className="font-headline text-4xl font-bold text-primary md:text-5xl"
+          variants={headingVariants}
+          initial="initial"
+          animate="animate"
+        >
           My Skills
-        </h2>
-        <p ref={descriptionRef} className="mt-4 text-lg text-foreground/80">
+        </motion.h2>
+        <motion.p
+          className="mt-4 text-lg text-foreground/80"
+          variants={descriptionVariants}
+          initial="initial"
+          animate="animate"
+        >
           Technologies I work with
-        </p>
-
-        <div className="mt-16 space-y-16">
-          <div ref={frontendRef} className="skill-category">
+        </motion.p>
+        <motion.div
+          className="mt-16 space-y-16"
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+        >
+          <motion.div variants={categoryVariants} className="skill-category">
             <div className="relative">
               <h3 className="text-2xl font-semibold text-primary mb-8">
                 {skillsData.frontend.title}
@@ -131,9 +118,8 @@ export function SkillsSection() {
                 />
               ))}
             </div>
-          </div>
-
-          <div ref={backendRef} className="skill-category">
+          </motion.div>
+          <motion.div variants={categoryVariants} className="skill-category">
             <div className="relative">
               <h3 className="text-2xl font-semibold text-primary mb-8">
                 {skillsData.backend.title}
@@ -152,9 +138,8 @@ export function SkillsSection() {
                 />
               ))}
             </div>
-          </div>
-
-          <div ref={toolsRef} className="skill-category">
+          </motion.div>
+          <motion.div variants={categoryVariants} className="skill-category">
             <div className="relative">
               <h3 className="text-2xl font-semibold text-primary mb-8">
                 {skillsData.tools.title}
@@ -173,8 +158,8 @@ export function SkillsSection() {
                 />
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </SectionWrapper>
   );

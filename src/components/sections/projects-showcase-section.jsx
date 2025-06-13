@@ -1,12 +1,41 @@
 "use client";
 import { SectionWrapper } from "../common/section-wrapper.jsx";
 import { ProjectCard } from "../project-card.jsx";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef } from "react";
+import { motion } from "motion/react";
 import { cn } from "../../lib/utils.js";
 
-gsap.registerPlugin(ScrollTrigger);
+const containerVariants = {
+  initial: {},
+  animate: { transition: { staggerChildren: 0.2, delayChildren: 0.3 } }
+};
+
+const headingVariants = {
+  initial: { opacity: 0, y: 50 },
+  animate: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] }
+  }
+};
+
+const descriptionVariants = {
+  initial: { opacity: 0, y: 50 },
+  animate: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, delay: 0.2, ease: [0.23, 1, 0.32, 1] }
+  }
+};
+
+const projectCardVariants = {
+  initial: { opacity: 0, y: 50, scale: 0.95 },
+  animate: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] }
+  }
+};
 
 const projectsData = [
   {
@@ -39,55 +68,39 @@ const projectsData = [
 ];
 
 export function ProjectsShowcaseSection() {
-  const sectionRef = useRef(null);
-  const headingRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const projectCardsContainerRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        }
-      });
-
-      if (headingRef.current) {
-        tl.fromTo(headingRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6 }, 0);
-      }
-      if (descriptionRef.current) {
-        tl.fromTo(descriptionRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6 }, 0.2);
-      }
-      if (projectCardsContainerRef.current) {
-        const cards = Array.from(projectCardsContainerRef.current.children).map(
-          (childDiv) => childDiv.querySelector('[data-interactive="true"]') 
-        ).filter(Boolean);
-
-        if (cards.length > 0) {
-          tl.fromTo(cards, 
-            { opacity: 0, y: 50, scale: 0.95 }, 
-            { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.2, ease: "power2.out" }, 
-          0.3);
-        }
-      }
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <SectionWrapper ref={sectionRef} id="projects" className="bg-background">
-      <div className="text-center">
-        <h2 ref={headingRef} className="font-headline text-4xl font-bold text-primary md:text-5xl">My Projects</h2>
-        <p ref={descriptionRef} className="mt-4 text-lg text-foreground/80">
+    <SectionWrapper id="projects" className="bg-background">
+      <motion.div 
+        className="text-center"
+        variants={containerVariants}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <motion.h2 
+          className="font-headline text-4xl font-bold text-primary md:text-5xl"
+          variants={headingVariants}
+        >
+          My Projects
+        </motion.h2>
+        <motion.p 
+          className="mt-4 text-lg text-foreground/80"
+          variants={descriptionVariants}
+        >
           A selection of my work, showcasing my skills in web development.
-        </p>
-      </div>
-      <div ref={projectCardsContainerRef} className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+        </motion.p>
+      </motion.div>
+      <motion.div 
+        className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2"
+        variants={containerVariants}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         {projectsData.map((project, index) => (
-          <div 
+          <motion.div 
             key={project.id} 
+            variants={projectCardVariants}
             className={cn(
               "w-full",
               projectsData.length % 2 !== 0 && index === projectsData.length - 1 ? "md:col-span-2 flex justify-center" : ""
@@ -96,9 +109,9 @@ export function ProjectsShowcaseSection() {
             <div className={cn("w-full", projectsData.length % 2 !== 0 && index === projectsData.length - 1 ? "max-w-lg" : "")}> 
               <ProjectCard project={project} />
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </SectionWrapper>
   );
 }
