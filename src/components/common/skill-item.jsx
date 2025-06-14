@@ -1,7 +1,10 @@
 "use client";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import { useState } from "react";
 
 export function SkillItem({ icon: Icon, name, level, index, isHighlighted }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   const containerClasses = `
     relative flex flex-col items-center justify-center w-24 h-24 rounded-xl
     transition-colors cursor-pointer
@@ -28,14 +31,10 @@ export function SkillItem({ icon: Icon, name, level, index, isHighlighted }) {
       whileHover={{ 
         y: -5, 
         scale: 1.1,
-        transition: { duration: 0.3, ease: "easeOut" },
-        '--tooltip-opacity': 1,
-        '--tooltip-y': 0,
+        transition: { duration: 0.3, ease: "easeOut" }
       }}
-      whileTap={{
-        '--tooltip-opacity': 0,
-        '--tooltip-y': 10,
-      }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
     >
       <motion.div
         className="relative"
@@ -55,14 +54,20 @@ export function SkillItem({ icon: Icon, name, level, index, isHighlighted }) {
         />
       </motion.div>
       {/* Tooltip */}
-      <motion.div
-        className="tooltip absolute -bottom-8 left-1/2 -translate-x-1/2 bg-background/90 text-foreground px-2 py-1 rounded text-sm whitespace-nowrap pointer-events-none z-10"
-        style={{ opacity: 'var(--tooltip-opacity, 0)', y: 'var(--tooltip-y, 10px)' }}
-        transition={{ duration: 0.2 }}
-      >
-        <span className="font-medium">{name}</span>
-        <span className="text-primary/80"> • {level}</span>
-      </motion.div>
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.05 }}
+            className="tooltip absolute -bottom-8 left-1/2 -translate-x-1/2 bg-background/90 text-foreground px-2 py-1 rounded text-sm whitespace-nowrap pointer-events-none z-10"
+          >
+            <span className="font-medium">{name}</span>
+            <span className="text-primary/80"> • {level}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 } 
