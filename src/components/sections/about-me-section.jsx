@@ -1,11 +1,11 @@
 "use client";
-import Image from "next/image";
 import { SectionWrapper } from "../common/section-wrapper.jsx";
 import { Button } from "../ui/button.jsx";
 import { siteConfig } from "@/config/site.js";
 import { DownloadCloud } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const containerVariants = {
   initial: {},
@@ -32,26 +32,23 @@ export function AboutMeSection() {
   return (
     <SectionWrapper id="about" className="bg-background">
       <motion.div
-        className="grid items-center gap-12 md:grid-cols-2"
+        className="grid items-center gap-12 md:grid-cols-2 w-full"
         variants={containerVariants}
         initial="initial"
         animate="animate"
       >
         <motion.div
-          className="relative aspect-square w-full max-w-md overflow-hidden rounded-lg shadow-xl md:order-last"
+          className="relative aspect-square w-full overflow-hidden rounded-lg shadow-xl md:order-last justify-self-center"
           variants={imageVariants}
         >
-          <Image
-            src="/pic1.jpg"
-            alt="Abdul Razith - React Developer"
-            fill
-            style={{ objectFit: "cover" }}
-            className="transition-transform duration-500 hover:scale-105"
-            data-ai-hint="professional portrait"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          <DotLottieReact
+            src="/animation.lottie"
+            loop
+            autoplay
+            className="w-full h-full object-cover"
           />
         </motion.div>
-        <div>
+        <div className="justify-self-center">
           <motion.h2
             className="font-headline text-4xl font-bold text-primary md:text-5xl"
             variants={headingVariants}

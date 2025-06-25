@@ -26,32 +26,32 @@ const skillsData = {
   frontend: {
     title: "Frontend Development",
     skills: [
-      { name: "React.js", icon: SiReact, level: "Expert" },
-      { name: "Next.js", icon: SiNextdotjs, level: "Expert" },
-      { name: "JavaScript ES6+", icon: SiJavascript, level: "Expert" },
+      { name: "React.js", icon: SiReact, level: "Intermediate" },
+      { name: "Next.js", icon: SiNextdotjs, level: "Basic" },
+      { name: "JavaScript ES6+", icon: SiJavascript, level: "Intermediate" },
       { name: "HTML5", icon: SiHtml5, level: "Advanced" },
       { name: "CSS3", icon: SiCss3, level: "Advanced" },
-      { name: "Tailwind CSS", icon: SiTailwindcss, level: "Advanced" },
+      { name: "Tailwind CSS", icon: SiTailwindcss, level: "Intermediate" },
       { name: "Bootstrap 5", icon: SiBootstrap, level: "Advanced" }
     ]
   },
   backend: {
     title: "Backend Development",
     skills: [
-      { name: "Python", icon: SiPython, level: "Advanced" },
-      { name: "Django", icon: SiDjango, level: "Advanced" },
-      { name: "MySQL", icon: SiMysql, level: "Intermediate" },
-      { name: "MongoDB", icon: SiMongodb, level: "Intermediate" },
+      { name: "Python", icon: SiPython, level: "Basic" },
+      { name: "Django", icon: SiDjango, level: "Basic" },
+      { name: "MySQL", icon: SiMysql, level: "Basic" },
+      { name: "MongoDB", icon: SiMongodb, level: "Basic" },
       { name: "RESTful APIs", icon: FaCode, level: "Basic" }
     ]
   },
   tools: {
     title: "Development Tools",
     skills: [
-      { name: "Git", icon: SiGit, level: "Advanced" },
+      { name: "Git", icon: SiGit, level: "Intermediate" },
       { name: "VS Code", icon: VscVscode, level: "Advanced" },
       { name: "Chrome DevTools", icon: SiGooglechrome, level: "Advanced" },
-      { name: "Lighthouse Testing", icon: SiLighthouse, level: "Intermediate" }
+      { name: "Lighthouse Testing", icon: SiLighthouse, level: "Advanced" }
     ]
   }
 };
@@ -119,7 +119,7 @@ export function SkillsSection() {
               ))}
             </div>
           </motion.div>
-          <motion.div variants={categoryVariants} className="skill-category">
+          {/* <motion.div variants={categoryVariants} className="skill-category">
             <div className="relative">
               <h3 className="text-2xl font-semibold text-primary mb-8">
                 {skillsData.backend.title}
@@ -138,7 +138,7 @@ export function SkillsSection() {
                 />
               ))}
             </div>
-          </motion.div>
+          </motion.div> */}
           <motion.div variants={categoryVariants} className="skill-category">
             <div className="relative">
               <h3 className="text-2xl font-semibold text-primary mb-8">

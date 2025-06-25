@@ -1,10 +1,11 @@
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, Newspaper, User2, Code2, FolderKanban, Mail } from 'lucide-react';
 
 export const navItems = [
-  { title: 'About', href: '#about' },
-  { title: 'Skills', href: '#skills' },
-  { title: 'Projects', href: '#projects' },
-  { title: 'Contact', href: '#contact' },
+  { title: 'About', href: '#about', icon: User2 },
+  { title: 'Skills', href: '#skills', icon: Code2 },
+  { title: 'Projects', href: '#projects', icon: FolderKanban },
+  { title: 'Blog', href: 'https://medium.com/@razith01', icon: Newspaper, external: true },
+  { title: 'Contact', href: '#contact', icon: Mail },
 ];
 
 export const socialLinks = [

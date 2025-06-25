@@ -47,6 +47,27 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const renderNavLink = (item) => {
+    const Icon = item.icon;
+    const linkProps = {
+      href: item.href,
+      className: "font-medium text-foreground/80 transition-colors hover:text-primary flex items-center gap-2",
+      "data-interactive": "true",
+      ...(item.external && {
+        target: "_blank",
+        rel: "noopener noreferrer"
+      })
+    };
+
+    return (
+      <Link {...linkProps}>
+        <Icon className="h-4 w-4" />
+        {item.title}
+        {item.external && <span className="sr-only">(opens in new tab)</span>}
+      </Link>
+    );
+  };
+
   return (
     <motion.header
       initial="initial"
@@ -77,13 +98,7 @@ export function Header() {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link
-                  href={item.href}
-                  className="font-medium text-foreground/80 transition-colors hover:text-primary"
-                  data-interactive="true"
-                >
-                  {item.title}
-                </Link>
+                {renderNavLink(item)}
               </motion.div>
             ))}
           </nav>
@@ -117,14 +132,9 @@ export function Header() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
+                      className="rounded-md px-3 py-2 text-lg font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
-                      <Link
-                        href={item.href}
-                        className="rounded-md px-3 py-2 text-lg font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
-                        data-interactive="true"
-                      >
-                        {item.title}
-                      </Link>
+                      {renderNavLink(item)}
                     </motion.div>
                   </SheetClose>
                 ))}

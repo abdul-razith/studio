@@ -7,6 +7,7 @@ import { SkillsSection } from "../components/sections/skills-section.jsx";
 import { ProjectsShowcaseSection } from "../components/sections/projects-showcase-section.jsx";
 import { ContactFormSection } from "../components/sections/contact-form-section.jsx";
 import ErrorBoundary, { ErrorBoundaryHandler } from "../components/common/error-boundary.jsx";
+import LoadingScreen from "../components/common/LoadingScreen.jsx";
 
 function SectionWrapper({ children }) {
   return (
@@ -24,30 +25,32 @@ function SectionWrapper({ children }) {
 
 export default function HomePage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-grow">
-        <ErrorBoundary>
-          <HeroSection />
-        </ErrorBoundary>
-        
-        <ErrorBoundary>
-          <AboutMeSection />
-        </ErrorBoundary>
-        
-        <ErrorBoundary>
-          <SkillsSection />
-        </ErrorBoundary>
-        
-        <ErrorBoundary>
-          <ProjectsShowcaseSection />
-        </ErrorBoundary>
-        
-        <ErrorBoundary>
-          <ContactFormSection />
-        </ErrorBoundary>
-      </main>
-      <Footer />
-    </div>
+    <Suspense fallback={<LoadingScreen />}>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-grow">
+          <ErrorBoundary>
+            <HeroSection />
+          </ErrorBoundary>
+          
+          <ErrorBoundary>
+            <AboutMeSection />
+          </ErrorBoundary>
+          
+          <ErrorBoundary>
+            <SkillsSection />
+          </ErrorBoundary>
+          
+          <ErrorBoundary>
+            <ProjectsShowcaseSection />
+          </ErrorBoundary>
+          
+          <ErrorBoundary>
+            <ContactFormSection />
+          </ErrorBoundary>
+        </main>
+        <Footer />
+      </div>
+    </Suspense>
   );
 }
