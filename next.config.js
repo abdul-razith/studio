@@ -19,7 +19,9 @@ const nextConfig = {
   },
   experimental: {
     allowedDevOrigins: ["6000-firebase-studio-1749116645742.cluster-ikxjzjhlifcwuroomfkjrx437g.cloudworkstations.dev"],
-  }
+  },
+
+  output: "export",
 };
 
 module.exports = nextConfig;
